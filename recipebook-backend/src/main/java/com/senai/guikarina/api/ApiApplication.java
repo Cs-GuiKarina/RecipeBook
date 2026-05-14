@@ -1,4 +1,4 @@
-package com.senai.receitas.api;
+package com.senai.guikarina.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
