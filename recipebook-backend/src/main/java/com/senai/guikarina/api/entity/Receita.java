@@ -22,18 +22,22 @@ public class Receita {
     @Column(unique = true)
     private String nome;
 
+    //RN04: Categoria deve ser um dos valores do enum
     @NotNull
     @Enumerated(EnumType.STRING)
     private Categoria categoria;
 
+    //RN05: Tempo de preparo em minutos (mínimo 1)
     @NotNull
     @Min(1)
     private Integer tempoPreparo;
 
+    //RN06: Porções mínimo 1
     @NotNull
     @Min(1)
     private Integer porcoes;
 
+    //RN03: Ingredientes devem ser armazenados como lista
     @NotNull
     @Size(min = 1)
     private List<String>  ingredientes;
@@ -43,7 +47,7 @@ public class Receita {
     private String modoPreparo;
 
     private LocalDateTime dataCadastro;
-
+    //RN02: Data de cadastro deve ser preenchida automaticamente
     @PrePersist
     public void prePersist(){
         this.dataCadastro = LocalDateTime.now();
