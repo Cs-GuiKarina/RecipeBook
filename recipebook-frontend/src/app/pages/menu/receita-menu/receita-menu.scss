@@ -1,0 +1,19 @@
+.p-menubar {
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+}
+
+.p-menubar-start {
+  align-items: center;
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+.start-icon {
+  font-size: 1rem;
+  padding: 0.75rem;
+  font-weight: bold;
+  border-radius: 10px;
+  background: var(--p-primary-color);
+  color: var(--p-menubar-border-color);
+}

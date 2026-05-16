@@ -1,0 +1,30 @@
+<p-menubar [model]="items">
+  <ng-template #start>
+    <div routerLink="" class="p-menubar-start">
+      <i class="pi pi-book start-icon"></i>
+    </div>
+  </ng-template>
+
+  <ng-template #item let-item>
+    <p-button
+      [pTooltip]="item.tooltip"
+      tooltipPosition="bottom"
+      positionTop="10"
+      [label]="item.label"
+      [icon]="item.icon"
+    ></p-button>
+  </ng-template>
+
+  <ng-template #end>
+    <p-inputgroup>
+      <p-inputgroup-addon>
+        <i class="pi pi-search"></i>
+      </p-inputgroup-addon>
+
+      <p-float-label variant="on">
+        <input type="text" pInputText id="filter" />
+        <label for="filter">Filtrar</label>
+      </p-float-label>
+    </p-inputgroup>
+  </ng-template>
+</p-menubar>
