@@ -2,15 +2,16 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ReceitaService } from '../../../services/receita.service';
 import { Receita } from '../../../models/receita.model';
 import { CardModule } from 'primeng/card';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import { PanelModule } from 'primeng/panel';
 import { ButtonModule } from 'primeng/button';
 import { DrawerModule } from 'primeng/drawer';
+import { DividerModule } from 'primeng/divider';
 
 @Component({
   selector: 'app-receita-lista',
-  imports: [CardModule, AsyncPipe, PanelModule, ButtonModule, DrawerModule],
+  imports: [CardModule, AsyncPipe, PanelModule, ButtonModule, DrawerModule, DividerModule, DatePipe],
   templateUrl: './receita-lista.html',
   styleUrl: './receita-lista.scss',
 })
