@@ -1,8 +1,17 @@
 export enum Categoria {
-  DOCE,
-  SALGADO,
-  BEBIDA,
-  SOBREMESA
+  DOCE = 'DOCE',
+  SALGADO = 'SALGADO',
+  BEBIDA = 'BEBIDA',
+  SOBREMESA = 'SOBREMESA'
+}
+
+export class ReceitaTransferencia {
+  nome?: string;
+  categoria?: Categoria;
+  tempoPreparo?: number;
+  porcoes?: number;
+  ingredientes?: string[];
+  modoPreparo?: string;
 }
 
 export class Receita {
