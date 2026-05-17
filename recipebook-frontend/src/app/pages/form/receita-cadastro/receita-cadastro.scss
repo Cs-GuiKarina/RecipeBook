@@ -1,0 +1,9 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+::ng-deep .botao-alerta {
+  border-color: var(--p-inputtext-invalid-border-color) !important;
+}
