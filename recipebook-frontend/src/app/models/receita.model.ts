@@ -1,8 +1,8 @@
 export enum Categoria {
-  DOCE,
-  SALGADO,
-  BEBIDA,
-  SOBREMESA
+  DOCE = 'Doce',
+  SALGADO = 'Salgado',
+  BEBIDA = 'Bebida',
+  SOBREMESA = 'Sobremesa'
 }
 
 export class Receita {
