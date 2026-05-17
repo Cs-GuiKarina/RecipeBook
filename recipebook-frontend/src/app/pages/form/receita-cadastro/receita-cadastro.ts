@@ -1,3 +1,4 @@
+import { ReceitaTransferencia } from './../../../models/receita.model';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AutoFocusModule } from 'primeng/autofocus';
@@ -13,11 +14,18 @@ import { Categoria, Receita } from '../../../models/receita.model';
 import { ReceitaService } from '../../../services/receita.service';
 import { InputNumberModule } from "primeng/inputnumber";
 import { Textarea, TextareaModule } from "primeng/textarea";
+import { ChipModule } from "primeng/chip";
+import { Router } from '@angular/router';
 
 
 interface CategoriaOption {
   label: string;
   value: Categoria;
+}
+
+interface IngredienteOption {
+  id: number;
+  value: string;
 }
 
 @Component({
@@ -35,7 +43,8 @@ interface CategoriaOption {
     InputGroupAddonModule,
     FormsModule,
     InputNumberModule,
-    TextareaModule
+    TextareaModule,
+    ChipModule
 ],
   templateUrl: './receita-cadastro.html',
   styleUrl: './receita-cadastro.scss',
@@ -43,13 +52,14 @@ interface CategoriaOption {
 export class ReceitaCadastro {
   private fb = inject(FormBuilder);
   private receitaService = inject(ReceitaService);
+  private router = inject(Router);
 
   form: FormGroup = this.fb.group({
     nome: ['', [Validators.required, Validators.minLength(3)]],
     categoria: [Categoria.DOCE, Validators.required],
     tempoPreparo: [0, [Validators.required, Validators.min(1)]],
     porcoes: [0, [Validators.required, Validators.min(1)]],
-    ingredientes: [this.fb.array(['']), Validators.required],
+    ingredienteAtual: ['', []],
     modoPreparo: ['', [Validators.required, Validators.minLength(10)]]
   });
 
@@ -58,8 +68,43 @@ export class ReceitaCadastro {
     value: categoria
   }))
 
+  ocorreuErro: boolean = false;
+  ingredienteLista: IngredienteOption[] = [];
+  removerIngrediente(ingrediente: IngredienteOption) {
+    this.ingredienteLista = this.ingredienteLista.filter((i) => i.id !== ingrediente.id);
+  }
+
+  onIngredienteAdicionado() {
+    const novoIngrediente = this.form.get('ingredienteAtual')?.value.trim() || '';
+    if (novoIngrediente === '') {
+      return;
+    }
+    this.ingredienteLista.push({ id: this.ingredienteLista.length + 1, value: novoIngrediente });
+
+    this.form.get('ingredienteAtual')?.setValue('');
+  }
 
   salvarReceita() {
+    if (this.form.valid && this.ingredienteLista.length > 0) {
+      const novaReceita: ReceitaTransferencia = {
+        nome: this.form.get('nome')?.value,
+        categoria: this.form.get('categoria')?.value,
+        tempoPreparo: this.form.get('tempoPreparo')?.value,
+        porcoes: this.form.get('porcoes')?.value,
+        ingredientes: this.ingredienteLista.map(i => i.value),
+        modoPreparo: this.form.get('modoPreparo')?.value,
+      }
 
+      this.receitaService.criar(novaReceita).subscribe({
+        next: (_receitaCriada) => {
+          this.form.reset();
+          this.router.navigate(['/receitas'], {queryParams: {cadastroSucesso: true}});
+        },
+        error: (error) => {
+          this.ocorreuErro = true;
+          console.error('Erro ao criar receita:', error);
+        }
+      });
+    }
   }
 }

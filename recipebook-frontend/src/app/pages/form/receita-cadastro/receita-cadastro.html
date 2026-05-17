@@ -1,15 +1,14 @@
 <p-panel style="margin-top: 1em">
-  <form [formGroup]="form" (ngSubmit)="salvarReceita()">
+  <form [formGroup]="form">
     <div class="grid">
-      <!-- Nome -->
       @let nomeInvalido = form.get('nome')?.invalid && form.get('nome')?.touched;
       @let tempoPreparoInvalido =
         form.get('tempoPreparo')?.invalid && form.get('tempoPreparo')?.touched;
-      @let porcoesInvalido =
-        form.get('porcoes')?.invalid && form.get('porcoes')?.touched;
+      @let porcoesInvalido = form.get('porcoes')?.invalid && form.get('porcoes')?.touched;
       @let modoPreparoInvalido =
         form.get('modoPreparo')?.invalid && form.get('modoPreparo')?.touched;
 
+      <!-- Nome -->
       <p-inputgroup>
         <p-inputgroup-addon
           [style]="{
@@ -25,7 +24,15 @@
         </p-inputgroup-addon>
 
         <p-float-label variant="on">
-          <input pInputText formControlName="nome" autocomplete="off" />
+          <input
+            pInputText
+            formControlName="nome"
+            autocomplete="off"
+            [style]="{
+              'border-color': nomeInvalido ? 'var(--p-inputtext-invalid-border-color)' : '',
+            }"
+            id="Nome"
+          />
           <label for="Nome">Nome</label>
         </p-float-label>
       </p-inputgroup>
@@ -47,8 +54,9 @@
             appendTo="body"
             [options]="categoriasPossiveis"
             formControlName="categoria"
+            inputId="categoria"
           ></p-select>
-          <label for="Categoria">Categoria</label>
+          <label for="categoria">Categoria</label>
         </p-float-label>
       </p-inputgroup>
 
@@ -75,8 +83,12 @@
             [decrementButtonClass]="tempoPreparoInvalido ? 'botao-alerta' : ''"
             [incrementButtonClass]="tempoPreparoInvalido ? 'botao-alerta' : ''"
             autocomplete="off"
+            [style]="{
+              'border-color': tempoPreparoInvalido ? 'var(--p-inputtext-invalid-border-color)' : '',
+            }"
+            inputId="tempoPreparo"
           />
-          <label for="Tempo de Preparo">Tempo de Preparo (minutos)</label>
+          <label for="tempoPreparo">Tempo de Preparo (minutos)</label>
         </p-float-label>
       </p-inputgroup>
 
@@ -88,8 +100,15 @@
 
       <!-- Porções -->
       <p-inputgroup>
-        <p-inputgroup-addon [style]="{'border-color': porcoesInvalido ? 'var(--p-inputtext-invalid-border-color)' : ''}">
-          <i class="pi pi-users" [style]="{'color': porcoesInvalido ? 'var(--p-inputtext-invalid-border-color)' : ''}"></i>
+        <p-inputgroup-addon
+          [style]="{
+            'border-color': porcoesInvalido ? 'var(--p-inputtext-invalid-border-color)' : '',
+          }"
+        >
+          <i
+            class="pi pi-users"
+            [style]="{ color: porcoesInvalido ? 'var(--p-inputtext-invalid-border-color)' : '' }"
+          ></i>
         </p-inputgroup-addon>
 
         <p-float-label variant="on">
@@ -100,8 +119,12 @@
             [decrementButtonClass]="porcoesInvalido ? 'botao-alerta' : ''"
             [incrementButtonClass]="porcoesInvalido ? 'botao-alerta' : ''"
             autocomplete="off"
+            [style]="{
+              'border-color': porcoesInvalido ? 'var(--p-inputtext-invalid-border-color)' : '',
+            }"
+            inputId="porcoes"
           />
-          <label for="Porções">Porções</label>
+          <label for="porcoes">Porções</label>
         </p-float-label>
       </p-inputgroup>
 
@@ -134,6 +157,10 @@
             [fluid]="true"
             formControlName="modoPreparo"
             autocomplete="off"
+            [style]="{
+              'border-color': modoPreparoInvalido ? 'var(--p-inputtext-invalid-border-color)' : '',
+            }"
+            id="Modo de Preparo"
           >
           </textarea>
           <label for="Modo de Preparo">Modo de Preparo</label>
@@ -146,7 +173,53 @@
         >
       }
 
-      <!-- TODO: Lista de ingredientes (que é array de string) e o botão de salva r -->
+      <!-- Lista de ingredientes -->
+      <p-input-group>
+        <p-inputgroup-addon>
+          <i class="pi pi-shopping-cart"></i>
+        </p-inputgroup-addon>
+        <p-float-label variant="on">
+          <input
+            formControlName="ingredienteAtual"
+            pInputText
+            (keydown.enter)="onIngredienteAdicionado()"
+            autocomplete="off"
+            id="Ingredientes"
+          />
+          <label for="Ingredientes">Ingredientes (pressione Enter para adicionar)</label>
+        </p-float-label>
+      </p-input-group>
+
+      <p-panel header="Ingredientes:" style="margin-top: 1em">
+        @if (ingredienteLista.length > 0) {
+          @for (ingrediente of ingredienteLista || []; track ingrediente.id) {
+            <p-chip
+              [label]="ingrediente.value"
+              removable="true"
+              [style]="{'margin': '0 0.2rem'}"
+              (onRemove)="removerIngrediente(ingrediente)"
+            ></p-chip>
+          }
+        } @else {
+          <p-message severity="info" variant="outlined" size="small"
+            >Nenhum ingrediente adicionado.</p-message
+          >
+        }
+      </p-panel>
+
+      <p-button
+        label="Salvar Receita"
+        icon="pi pi-check"
+        (onClick)="salvarReceita()"
+        severity="primary"
+        [disabled]="form.invalid || ingredienteLista.length === 0"
+      ></p-button>
     </div>
   </form>
+
+  @if (ocorreuErro) {
+    <div [style]="{'margin-top': '1em'}">
+      <p-message severity="error" variant="outlined" size="small">Ocorreu um erro ao salvar a receita. Por favor, tente novamente.</p-message>
+    </div>
+  }
 </p-panel>

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Receita } from '../models/receita.model';
+import { Receita, ReceitaTransferencia } from '../models/receita.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -22,7 +22,7 @@ export class ReceitaService {
     return this.http.get<Receita[]>(`${this.apiUrl}?filtro=${filtro}`);
   }
 
-  criar(receita: Receita): Observable<Receita> {
+  criar(receita: ReceitaTransferencia): Observable<Receita> {
     return this.http.post<Receita>(this.apiUrl, receita);
   }
 
