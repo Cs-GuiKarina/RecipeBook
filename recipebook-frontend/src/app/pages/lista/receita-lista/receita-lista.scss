@@ -5,12 +5,12 @@
 
 .cards-wrapper {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 100px);
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 16rem));
+  grid-template-rows: repeat(10, minmax(10rem, 14rem));
   gap: 2rem;
   color: var(--primary-color);
 
-  grid-template-rows: auto auto;
+
 
 
 }
@@ -20,28 +20,48 @@
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  width: 10.5rem;
-  height: 10rem;
+  min-width: 10rem;
 
-  .recipe-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: red;
+
+
+
+
+  .p-card-header {
+    font-size: 1.25rem;
+    font-weight: bold;
+    word-wrap: break-all;
+    overflow: hidden;
+  }
+  .p-card-subtitle {
+    font-size: 1rem;
+
+  }
+  .p-card-body {
+    font-size: 0.875rem;
+
   }
 
   .recipe-card-footer {
     display: flex;
     justify-content: end;
+    
     width: 100%;
 
     .p-button{
-      background-color: #34BED3;
+
       border-radius: 10px;
+      border: none;
       padding: 0.5rem 1rem;
+      font-size: 0.75rem;
       font-weight: bold;
+
     }
+
   }
 
 }
+.drawer-header {
+  background: red;
 
+
+}

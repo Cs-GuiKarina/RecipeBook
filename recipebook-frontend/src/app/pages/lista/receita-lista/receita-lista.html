@@ -1,31 +1,59 @@
-
-
 @if (receitas | async) {
-  <p-panel >
+  <p-panel>
     <div class="cards-wrapper">
-    @for (item of receitas | async; track item) {
-
+      @for (item of receitas | async; track item) {
         <p-card class="cards">
-          <ng-template #header class="recipe-card-header">{{ item.nome }}</ng-template>
+          <ng-template #header>{{ item.nome }}</ng-template>
 
-          <ng-template #subtitle class="recipe-card-subtitle">{{ item.categoria }}</ng-template>
+          <ng-template #subtitle>{{ item.categoria }}</ng-template>
 
-          <div style="display: inline-grid; grid-template-columns: auto auto; gap: 5px; ">
-            <i class="pi pi-clock" style="align-content: start; "></i>
+          <div style="display: inline-grid; grid-template-columns: auto auto; gap: 5px">
+            <i class="pi pi-clock" style="align-content: start"></i>
             {{ item.tempoPreparo }} minutos
           </div>
 
           <ng-template #footer class="recipe-card-content-rodape">
             <div class="recipe-card-footer">
-              <p-button class="button" label="Ver Detalhes" variant="outlined" raised="true" severity="contrast"/>
+              <p-button
+                class="button"
+                label="Ver Detalhes"
+                variant="outlined"
+                severity="contrast"
+                (click)="deixarVisivel(item.id)"
+              />
             </div>
-
           </ng-template>
         </p-card>
-
-    }
+      }
     </div>
   </p-panel>
+  @if (idAmostra > 0) {
+    @for (item of receitas | async; track item) {
+      @if (item.id == idAmostra) {
+        <p-drawer [visible]="mostrandoDrawer" blockScroll="true" (onHide)="idAmostra = -1" [fullScreen]="true">
+          <ng-template #header style="background-color: red;">
+            <div >
+              <h2 style="margin-bottom: 0;">
+                {{ item.nome }} <br />
+                <i class="pi pi-clock" style="align-content: start"></i>
+                {{ item.tempoPreparo }} minutos
+              </h2>
+              <p style="margin-bottom: 0;">{{ item.categoria }}</p>
+            </div>
+          </ng-template>
+          <h3>Ingredientes (Porções: {{ item.porcoes }}):</h3>
+          <ul>
+            @for (ingrediente of item.ingredientes; track ingrediente) {
+              <li>{{ ingrediente }}</li>
+            }
+          </ul>
+          <h3>Modo de Preparo:</h3>
+          <pre>{{ item.modoPreparo }}</pre>
+        </p-drawer>
+
+      }
+    }
+  }
 } @else {
   <p>Nenhuma receita cadastrada.</p>
 }
