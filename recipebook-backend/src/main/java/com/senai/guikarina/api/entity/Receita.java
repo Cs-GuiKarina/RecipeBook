@@ -43,6 +43,7 @@ public class Receita {
     private List<String>  ingredientes;
 
     @NotNull
+    @Lob
     @Size(min = 10)
     private String modoPreparo;
 
