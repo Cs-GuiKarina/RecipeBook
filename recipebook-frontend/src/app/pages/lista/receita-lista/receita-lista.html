@@ -1,0 +1,31 @@
+
+
+@if (receitas | async) {
+  <p-panel >
+    <div class="cards-wrapper">
+    @for (item of receitas | async; track item) {
+
+        <p-card class="cards">
+          <ng-template #header class="recipe-card-header">{{ item.nome }}</ng-template>
+
+          <ng-template #subtitle class="recipe-card-subtitle">{{ item.categoria }}</ng-template>
+
+          <div style="display: inline-grid; grid-template-columns: auto auto; gap: 5px; ">
+            <i class="pi pi-clock" style="align-content: start; "></i>
+            {{ item.tempoPreparo }} minutos
+          </div>
+
+          <ng-template #footer class="recipe-card-content-rodape">
+            <div class="recipe-card-footer">
+              <p-button class="button" label="Ver Detalhes" variant="outlined" raised="true" severity="contrast"/>
+            </div>
+
+          </ng-template>
+        </p-card>
+
+    }
+    </div>
+  </p-panel>
+} @else {
+  <p>Nenhuma receita cadastrada.</p>
+}
