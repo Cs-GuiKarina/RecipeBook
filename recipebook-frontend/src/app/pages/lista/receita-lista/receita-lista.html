@@ -1,0 +1,97 @@
+<p-toast />
+<p-confirmdialog />
+@if (sucessoAoCriar) {
+  <div [style]="{ 'margin-top': '10px' }">
+    <p-message severity="info" closable="true" variant="outlined" (onClose)="removerQuery()"
+      >Receita criada com sucesso!</p-message
+    >
+  </div>
+}
+
+@if (receitas | async) {
+  <p-panel>
+    <div class="cards-wrapper">
+      @for (item of receitas | async; track item) {
+        <p-card class="cards">
+          <ng-template #header>{{ item.nome }}</ng-template>
+
+          <ng-template #subtitle>{{ item.categoria }}</ng-template>
+
+          <div style="display: inline-grid; grid-template-columns: auto auto; gap: 5px">
+            <i class="pi pi-clock" style="align-content: start"></i>
+            {{ item.tempoPreparo }} minutos
+          </div>
+
+          <ng-template #footer class="recipe-card-content-rodape">
+            <div class="recipe-card-footer">
+              <p-button
+                class="button"
+                label="Ver Detalhes"
+                variant="outlined"
+                severity="contrast"
+                raised="true"
+                (click)="deixarVisivel(item.id)"
+              />
+            </div>
+          </ng-template>
+        </p-card>
+      }
+    </div>
+  </p-panel>
+  @if (idAmostra > 0) {
+    @for (item of receitas | async; track item) {
+      @if (item.id == idAmostra) {
+        <p-drawer
+          [visible]="mostrandoDrawer"
+          blockScroll="true"
+          (onHide)="idAmostra = -1"
+          [fullScreen]="true"
+        >
+          <ng-template #header>
+            <div style="width: 100%; margin-bottom: 0">
+              <h2>
+                {{ item.nome }} (ID: {{ item.id }}) <br />
+                <i class="pi pi-clock" style="align-content: start"></i>
+                {{ item.tempoPreparo }} minutos
+              </h2>
+              <p style="margin-bottom: 0">
+                Categoria:
+                {{
+                  item.categoria
+                    .toString()
+                    .split(' ')
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                    .join(' ')
+                }}
+              </p>
+              <p style="margin-bottom: 0">
+                Data de Criação: {{ item.dataCadastro | date: 'dd/MM/yyyy, HH:mm:ss' }}
+              </p>
+            </div>
+          </ng-template>
+          <p-divider align="left">Ingredientes (Porções: {{ item.porcoes }}):</p-divider>
+          <ul>
+            @for (ingrediente of item.ingredientes; track ingrediente) {
+              <li>{{ ingrediente }}</li>
+            }
+          </ul>
+          <p-divider align="left">Modo de Preparo:</p-divider>
+          <pre>{{ item.modoPreparo }}</pre>
+          <ng-template #footer>
+            <div style="display: flex; justify-content: flex-end">
+
+              <p-button
+                label="Deletar receita"
+                variant="outlined"
+                severity="danger"
+                (click)="confirmacao($event)"
+              />
+            </div>
+          </ng-template>
+        </p-drawer>
+      }
+    }
+  }
+} @else {
+  <p>Nenhuma receita cadastrada.</p>
+}
