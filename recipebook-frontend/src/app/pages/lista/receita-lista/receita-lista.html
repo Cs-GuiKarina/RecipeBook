@@ -1,3 +1,11 @@
+@if (sucessoAoCriar) {
+  <div [style]="{ 'margin-top': '10px' }">
+    <p-message severity="info" closable="true" variant="outlined" (onClose)="removerQuery()"
+      >Receita criada com sucesso!</p-message
+    >
+  </div>
+}
+
 @if (receitas | async) {
   <p-panel>
     <div class="cards-wrapper">
@@ -30,21 +38,33 @@
   @if (idAmostra > 0) {
     @for (item of receitas | async; track item) {
       @if (item.id == idAmostra) {
-        <p-drawer [visible]="mostrandoDrawer" blockScroll="true" (onHide)="idAmostra = -1" [fullScreen]="true" >
+        <p-drawer
+          [visible]="mostrandoDrawer"
+          blockScroll="true"
+          (onHide)="idAmostra = -1"
+          [fullScreen]="true"
+        >
           <ng-template #header>
-            <div style="width: 100%; margin-bottom: 0;" >
-
+            <div style="width: 100%; margin-bottom: 0">
               <h2>
-                {{ item.nome }} (ID: {{item.id}}) <br />
+                {{ item.nome }} (ID: {{ item.id }}) <br />
                 <i class="pi pi-clock" style="align-content: start"></i>
                 {{ item.tempoPreparo }} minutos
               </h2>
-              <p style="margin-bottom: 0;">Categoria: {{ item.categoria.toString().split(' ').map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ') }}</p>
-              <p style="margin-bottom: 0;">Data de Criação: {{ item.dataCadastro| date:'dd/MM/yyyy, HH:mm:ss' }}</p>
-
+              <p style="margin-bottom: 0">
+                Categoria:
+                {{
+                  item.categoria
+                    .toString()
+                    .split(' ')
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                    .join(' ')
+                }}
+              </p>
+              <p style="margin-bottom: 0">
+                Data de Criação: {{ item.dataCadastro | date: 'dd/MM/yyyy, HH:mm:ss' }}
+              </p>
             </div>
-
-
           </ng-template>
           <p-divider align="left">Ingredientes (Porções: {{ item.porcoes }}):</p-divider>
           <ul>
@@ -55,7 +75,6 @@
           <p-divider align="left">Modo de Preparo:</p-divider>
           <pre>{{ item.modoPreparo }}</pre>
         </p-drawer>
-
       }
     }
   }
