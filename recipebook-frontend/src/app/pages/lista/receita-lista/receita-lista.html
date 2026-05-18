@@ -1,3 +1,5 @@
+<p-toast />
+<p-confirmdialog />
 @if (sucessoAoCriar) {
   <div [style]="{ 'margin-top': '10px' }">
     <p-message severity="info" closable="true" variant="outlined" (onClose)="removerQuery()"
@@ -27,6 +29,7 @@
                 label="Ver Detalhes"
                 variant="outlined"
                 severity="contrast"
+                raised="true"
                 (click)="deixarVisivel(item.id)"
               />
             </div>
@@ -74,6 +77,17 @@
           </ul>
           <p-divider align="left">Modo de Preparo:</p-divider>
           <pre>{{ item.modoPreparo }}</pre>
+          <ng-template #footer>
+            <div style="display: flex; justify-content: flex-end">
+
+              <p-button
+                label="Deletar receita"
+                variant="outlined"
+                severity="danger"
+                (click)="confirmacao($event)"
+              />
+            </div>
+          </ng-template>
         </p-drawer>
       }
     }

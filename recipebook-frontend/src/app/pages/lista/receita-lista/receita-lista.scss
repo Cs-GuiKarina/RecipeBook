@@ -38,19 +38,18 @@
   }
   .p-card-body {
     font-size: 0.875rem;
-
+    height: 100%;
   }
 
-  .recipe-card-footer {
+  .p-card-footer {
     display: flex;
     justify-content: end;
-    
     width: 100%;
 
     .p-button{
 
       border-radius: 10px;
-      border: none;
+
       padding: 0.5rem 1rem;
       font-size: 0.75rem;
       font-weight: bold;
